@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+	<link rel="stylesheet" href="bootstrap.css" />
+    <link rel="stylesheet" href="site.css" />
+    <link href="jquery-ui.css" rel="stylesheet" />
+	
+	<script src="jquery.js"></script>
+	<script src="bootstrap.js"></script>
+    <script src="angular.js"></script>        
+    <script src="jquery-ui.js"></script>
+    <script src="jquery-ui-draggable-collision.js"></script>
+    <script src="jquery-ui-resizable-collision.js"></script>
+    <script src="jquery-collision.js"></script>
+	<script src="site.js"></script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="customersCtrl">
+<br />
+<table class="table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>To Add schedule click on below rows</th>
+    </tr>
+    <tr ng-repeat="user in users">
+        <td class="col-lg-1">{{ user.Name }}</td>
+        <td class="col-lg-11">
+            <div id="{{ $index }}" class="row" addtimeslot>
+                &nbsp;
+            </div>
+        </td>
+    </tr>
+</table>    
+</div>
+
+<br />
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('customersCtrl', function ($scope, $http) {
+        $scope.users = [
+            { "Name": "Alfreds Futterkiste", "City": "Berlin", "Country": "Germany" },
+            { "Name": "Ana Trujillo Emparedados y helados", "City": "México D.F.", "Country": "Mexico" },
+            { "Name": "Antonio Moreno Taquería", "City": "México D.F.", "Country": "Mexico" },
+            { "Name": "Around the Horn", "City": "London", "Country": "UK" },
+            { "Name": "B's Beverages", "City": "London", "Country": "UK" },
+            { "Name": "Berglunds snabbköp", "City": "Luleå", "Country": "Sweden" },
+            { "Name": "Blauer See Delikatessen", "City": "Mannheim", "Country": "Germany" },
+            { "Name": "Blondel père et fils", "City": "Strasbourg", "Country": "France" },
+            { "Name": "Bólido Comidas preparadas", "City": "Madrid", "Country": "Spain" },
+            { "Name": "Bon app'", "City": "Marseille", "Country": "France" },
+            { "Name": "Bottom-Dollar Marketse", "City": "Tsawassen", "Country": "Canada" },
+            { "Name": "Cactus Comidas para llevar", "City": "Buenos Aires", "Country": "Argentina" },
+            { "Name": "Centro comercial Moctezuma", "City": "México D.F.", "Country": "Mexico" },
+            { "Name": "Chop-suey Chinese", "City": "Bern", "Country": "Switzerland" },
+            { "Name": "Comércio Mineiro", "City": "São Paulo", "Country": "Brazil" }
+        ]
+    });
+
+    app.directive('draggable', function () {
+        return {
+            restrict: 'A',
+            link: function postLink(scope, element, attr) {
+                element.draggable({
+                    start: function (event, ui) {
+                        element.removeClass("jsObstacle");
+                        $('.jsObstacle').draggable('disable');
+                        $('.jsObstacle').resizable('disable');
+                    },
+                    obstacle: ".jsObstacle",
+                    preventCollision: true,
+                    stop: function (event, ui) {
+                        element.addClass("jsObstacle");
+                        $('.jsObstacle').draggable('enable');
+                        $('.jsObstacle').resizable('enable');
+                    }
+                });
+            }
+        };
+    });
+
+    app.directive('resize', function () {
+        var maxWidthOffset, total2Width;
+        return {
+            restrict: 'A',
+            link: function postLink(scope, element, attr) {
+                element.resizable(
+                    {
+                        //handles: 'e, w',
+                        handles: 'e, w',
+                        minHeight: 10,
+                        minWidth: 30,
+                        //resize: function (event, ui) {
+                        //    ui.size.width = Math.round( ui.size.width / 30 ) * 30;
+                        //},
+                        start: function (event, ui) {
+                            element.removeClass("jsObstacle");
+                            $('.jsObstacle').draggable('disable');
+                            $('.jsObstacle').resizable('disable');
+                        },
+                        obstacle: ".jsObstacle",
+                        preventCollision: true,
+                        stop: function (event, ui) {
+                            element.addClass("jsObstacle");
+                            $('.jsObstacle').draggable('enable');
+                            $('.jsObstacle').resizable('enable');
+                        }
+                    })
+            }
+        };
+    });
+
+    //app.directive('stoppingclick', function () {
+    //    return {
+    //        restrict: 'A',
+    //        link: function postLink(scope, element, attr) {
+    //            element.bind("click", function (e) {
+    //                if (e.target == e.currentTarget) {
+    //                    //alert("I am child");
+    //                }
+    //            });
+    //        }
+    //    };
+    //});
+
+    app.directive("addtimeslot", function ($compile) {
+        return function (scope, element, attrs) {
+            element.on("click", function (e) {
+                if (e.target == e.currentTarget) {
+                    element.append($compile("<div draggable resize class='btn btn-success jsObstacle'>&nbsp;</div>")(scope));
+                }
+            });
+        };
+    });
+
+
+</script>
+
+<style>
+
+    .element-resizable {
+        resize: horizontal;
+        overflow: auto
+    }
+    
+    .heightpx{
+        height: 20px;
+    }
+
+    .width25px{
+        width:25px;
+    }
+    .width25 {
+        width: 25%;
+    }
+
+    .width100 {
+        width: 100%;
+    }
+
+    .floatRight {
+        float: right;
+    }
+
+    .floatLeft {
+        float: left;
+    }
+</style>
+</body>
+</html>
