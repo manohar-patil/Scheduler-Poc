@@ -26,9 +26,10 @@
         <th>To Add schedule click on below rows</th>
     </tr>
     <tr ng-repeat="user in users">
-        <td class="col-lg-1">{{ user.Name }}</td>
-        <td class="col-lg-11">
-            <div id="{{ $index }}" class="row" addtimeslot>
+        <td class="col-lg-2 fixed-height">
+            <div class="row bg-plan">{{ user.Name }}</div></td>
+        <td class="col-lg-10 fixed-height">
+            <div id="{{ $index }}" class="row bg-pattern" addtimeslot>
                 &nbsp;
             </div>
         </td>
@@ -43,18 +44,18 @@
     app.controller('customersCtrl', function ($scope, $http) {
         $scope.users = [
             { "Name": "Alfreds Futterkiste", "City": "Berlin", "Country": "Germany" },
-            { "Name": "Ana Trujillo Emparedados y helados", "City": "México D.F.", "Country": "Mexico" },
-            { "Name": "Antonio Moreno Taquería", "City": "México D.F.", "Country": "Mexico" },
+            { "Name": "Ana Trujillo", "City": "México D.F.", "Country": "Mexico" },
+            { "Name": "Antonio Moreno", "City": "México D.F.", "Country": "Mexico" },
             { "Name": "Around the Horn", "City": "London", "Country": "UK" },
             { "Name": "B's Beverages", "City": "London", "Country": "UK" },
             { "Name": "Berglunds snabbköp", "City": "Luleå", "Country": "Sweden" },
-            { "Name": "Blauer See Delikatessen", "City": "Mannheim", "Country": "Germany" },
-            { "Name": "Blondel père et fils", "City": "Strasbourg", "Country": "France" },
-            { "Name": "Bólido Comidas preparadas", "City": "Madrid", "Country": "Spain" },
+            { "Name": "Blauer See", "City": "Mannheim", "Country": "Germany" },
+            { "Name": "Blondel père", "City": "Strasbourg", "Country": "France" },
+            { "Name": "Bólido Comidas", "City": "Madrid", "Country": "Spain" },
             { "Name": "Bon app'", "City": "Marseille", "Country": "France" },
             { "Name": "Bottom-Dollar Marketse", "City": "Tsawassen", "Country": "Canada" },
-            { "Name": "Cactus Comidas para llevar", "City": "Buenos Aires", "Country": "Argentina" },
-            { "Name": "Centro comercial Moctezuma", "City": "México D.F.", "Country": "Mexico" },
+            { "Name": "Cactus Comidas", "City": "Buenos Aires", "Country": "Argentina" },
+            { "Name": "Centro comercial", "City": "México D.F.", "Country": "Mexico" },
             { "Name": "Chop-suey Chinese", "City": "Bern", "Country": "Switzerland" },
             { "Name": "Comércio Mineiro", "City": "São Paulo", "Country": "Brazil" }
         ]
@@ -89,13 +90,12 @@
             link: function postLink(scope, element, attr) {
                 element.resizable(
                     {
-                        //handles: 'e, w',
                         handles: 'e, w',
                         minHeight: 10,
                         minWidth: 30,
-                        //resize: function (event, ui) {
-                        //    ui.size.width = Math.round( ui.size.width / 30 ) * 30;
-                        //},
+                        resize: function (event, ui) {
+                            ui.size.width = Math.round( ui.size.width / 30 ) * 30;
+                        },
                         start: function (event, ui) {
                             element.removeClass("jsObstacle");
                             $('.jsObstacle').draggable('disable');
@@ -112,19 +112,6 @@
             }
         };
     });
-
-    //app.directive('stoppingclick', function () {
-    //    return {
-    //        restrict: 'A',
-    //        link: function postLink(scope, element, attr) {
-    //            element.bind("click", function (e) {
-    //                if (e.target == e.currentTarget) {
-    //                    //alert("I am child");
-    //                }
-    //            });
-    //        }
-    //    };
-    //});
 
     app.directive("addtimeslot", function ($compile) {
         return function (scope, element, attrs) {
@@ -167,6 +154,28 @@
 
     .floatLeft {
         float: left;
+    }
+    .bg-pattern{
+      height: 50px;
+      background-color: rgb(211,211,211);
+      background-image: linear-gradient(to right, rgba(0,0,0,0.25) 6px, transparent 6px), 
+                        linear-gradient(to right, transparent 12px, rgba(0,0,0,0.25) 12px, rgba(0,0,0,0.25) 14px, transparent 14px, transparent 20px, rgba(0,0,0,0.25) 20px, rgba(0,0,0,0.25) 22px, transparent 22px, transparent 28px, rgba(0,0,0,0.25) 28px, rgba(0,0,0,0.25) 30px, transparent 30px, transparent 36px, rgba(0,0,0,0.25) 36px, rgba(0,0,0,0.25) 38px, transparent 38px);
+      background-repeat: repeat-x;
+      background-size: 44px 30px, 44px 20px;
+      background-position: 0px 0px;
+      border-top: 1px solid rgba(0,0,0,0.25);
+      border-left: 1px solid rgba(0,0,0,0.25);
+    }
+    .bg-plan{
+        height: 50px;
+        background-color: rgb(211,211,211);
+        background-repeat: repeat-x;
+        border-top: 1px solid rgba(0,0,0,0.25);
+        
+    }
+    .fixed-height{
+        height: 40px;
+        max-height: 40px;
     }
 </style>
 </body>
