@@ -26,19 +26,21 @@
         <th>To Add schedule click on below rows</th>
     </tr>
     <tr ng-repeat="user in users">
-        <td class="col-lg-2 fixed-height">
-            <div class="row bg-plan">{{ user.Name }}</div></td>
-        <td class="col-lg-10 fixed-height">
-            <div id="{{ $index }}" class="row bg-pattern" addtimeslot>
+        <td class="col-lg-2 fixed-heighttd">
+            <div style="clear:both; height:5px"></div>
+            <div class="row bg-plan fixed-heightdiv">{{ user.Name }}</div>
+            <div style="clear:both; height:5px"></div>
+        </td>
+        <td class="col-lg-10 fixed-heighttd">
+            <div style="clear:both; height:5px"></div>
+            <div id="{{ $index }}" class="ui-widget-header row bg-pattern fixed-heightdiv" droppable addtimeslot>
                 &nbsp;
             </div>
+            <div style="clear:both; height:5px"></div>
         </td>
     </tr>
 </table>    
 </div>
-
-<br />
-
 <script>
     var app = angular.module('myApp', []);
     app.controller('customersCtrl', function ($scope, $http) {
@@ -73,10 +75,29 @@
                     },
                     obstacle: ".jsObstacle",
                     preventCollision: true,
+                    revert: "invalid",
                     stop: function (event, ui) {
                         element.addClass("jsObstacle");
                         $('.jsObstacle').draggable('enable');
                         $('.jsObstacle').resizable('enable');
+                    }
+                });
+            }
+        };
+    });
+
+    app.directive('droppable', function () {
+        return {
+            restrict: 'A',
+            link: function postLink(scope, element, attr) {
+                element.droppable({
+                    tolerance: "fit",
+                    classes: {
+                        "ui-droppable-active": "ui-state-active",
+                        "ui-droppable-hover": "ui-state-hover"
+                    },
+                    drop: function (event, ui) {
+                        element.addClass("ui-state-highlight");
                     }
                 });
             }
@@ -91,10 +112,10 @@
                 element.resizable(
                     {
                         handles: 'e, w',
-                        minHeight: 10,
-                        minWidth: 30,
+                        minHeight: 15,
+                        minWidth: 15,
                         resize: function (event, ui) {
-                            ui.size.width = Math.round( ui.size.width / 30 ) * 30;
+                            ui.size.width = Math.round( ui.size.width / 15 ) * 15;
                         },
                         start: function (event, ui) {
                             element.removeClass("jsObstacle");
@@ -117,7 +138,7 @@
         return function (scope, element, attrs) {
             element.on("click", function (e) {
                 if (e.target == e.currentTarget) {
-                    element.append($compile("<div draggable resize class='btn btn-success jsObstacle'>&nbsp;</div>")(scope));
+                    element.append($compile("<div draggable resize class='btn btn-s btn-success jsObstacle'>&nbsp;</div>")(scope));
                 }
             });
         };
@@ -155,27 +176,24 @@
     .floatLeft {
         float: left;
     }
+    
     .bg-pattern{
-      height: 50px;
       background-color: rgb(211,211,211);
       background-image: linear-gradient(to right, rgba(0,0,0,0.25) 6px, transparent 6px), 
                         linear-gradient(to right, transparent 12px, rgba(0,0,0,0.25) 12px, rgba(0,0,0,0.25) 14px, transparent 14px, transparent 20px, rgba(0,0,0,0.25) 20px, rgba(0,0,0,0.25) 22px, transparent 22px, transparent 28px, rgba(0,0,0,0.25) 28px, rgba(0,0,0,0.25) 30px, transparent 30px, transparent 36px, rgba(0,0,0,0.25) 36px, rgba(0,0,0,0.25) 38px, transparent 38px);
       background-repeat: repeat-x;
       background-size: 44px 30px, 44px 20px;
       background-position: 0px 0px;
-      border-top: 1px solid rgba(0,0,0,0.25);
-      border-left: 1px solid rgba(0,0,0,0.25);
     }
     .bg-plan{
-        height: 50px;
         background-color: rgb(211,211,211);
         background-repeat: repeat-x;
-        border-top: 1px solid rgba(0,0,0,0.25);
-        
     }
-    .fixed-height{
-        height: 40px;
-        max-height: 40px;
+    .fixed-heightdiv{
+        height: 37px;
+    }
+    .fixed-heighttd{
+        height: 47px;
     }
 </style>
 </body>
