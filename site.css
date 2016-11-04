@@ -1,6 +1,7 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+body {
+    /*padding-top: 50px;*/
+    /*padding-bottom: 20px;*/
+    padding: 1%;
 }
 
 /* Wrapping element */
@@ -35,4 +36,26 @@ textarea {
   .carousel-caption {
     display: none
   }
+}
+
+/* Divya */
+table{
+    width: 100%;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(211,211,211);
+}
+
+th{
+    padding: 10px;
+}
+
+.bg-pattern.ui-widget-header{
+    background-color: transparent;
+}
+
+.btn{
+    padding: 0 12px;
+    height: 100%;
 }
