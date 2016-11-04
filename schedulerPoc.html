@@ -28,7 +28,7 @@
     <tr ng-repeat="user in users">
         <td class="col-lg-2 fixed-heighttd">
             <div style="clear:both; height:5px"></div>
-            <div class="row bg-plan fixed-heightdiv">{{ user.Name }}</div>
+            <div class="row bg-plan">{{ user.Name }}</div>
             <div style="clear:both; height:5px"></div>
         </td>
         <td class="col-lg-10 fixed-heighttd">
@@ -42,6 +42,8 @@
 </table>    
 </div>
 <script>
+    var eventDrag = true;   // This variable is used so that click is not fired after end of resize
+
     var app = angular.module('myApp', []);
     app.controller('customersCtrl', function ($scope, $http) {
         $scope.users = [
@@ -128,6 +130,10 @@
                             element.addClass("jsObstacle");
                             $('.jsObstacle').draggable('enable');
                             $('.jsObstacle').resizable('enable');
+                            event.stopImmediatePropagation();
+                            event.preventDefault();
+                            eventDrag = false;
+
                         }
                     })
             }
@@ -137,8 +143,12 @@
     app.directive("addtimeslot", function ($compile) {
         return function (scope, element, attrs) {
             element.on("click", function (e) {
-                if (e.target == e.currentTarget) {
-                    element.append($compile("<div draggable resize class='btn btn-s btn-success jsObstacle'>&nbsp;</div>")(scope));
+                if (e.target == e.currentTarget && eventDrag) {
+                    var elementOffset = element.offset();
+                    var currentX = (e.clientX) - elementOffset.left;
+                    element.append($compile("<div draggable resize class='btn btn-s btn-success jsObstacle timeItem' style='left:"+currentX+"px'>&nbsp;</div>")(scope));
+                }else{
+                    eventDrag = true;
                 }
             });
         };
@@ -178,7 +188,7 @@
     }
     
     .bg-pattern{
-      background-color: rgb(211,211,211);
+      /*background-color: rgb(211,211,211);*/
       background-image: linear-gradient(to right, rgba(0,0,0,0.25) 6px, transparent 6px), 
                         linear-gradient(to right, transparent 12px, rgba(0,0,0,0.25) 12px, rgba(0,0,0,0.25) 14px, transparent 14px, transparent 20px, rgba(0,0,0,0.25) 20px, rgba(0,0,0,0.25) 22px, transparent 22px, transparent 28px, rgba(0,0,0,0.25) 28px, rgba(0,0,0,0.25) 30px, transparent 30px, transparent 36px, rgba(0,0,0,0.25) 36px, rgba(0,0,0,0.25) 38px, transparent 38px);
       background-repeat: repeat-x;
@@ -186,11 +196,13 @@
       background-position: 0px 0px;
     }
     .bg-plan{
-        background-color: rgb(211,211,211);
+        padding: 8px;
+        /*background-color: rgb(211,211,211);*/
         background-repeat: repeat-x;
     }
     .fixed-heightdiv{
-        height: 37px;
+        /*height: 37px;*/
+        height: 100%;
     }
     .fixed-heighttd{
         height: 47px;
